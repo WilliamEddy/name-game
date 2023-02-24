@@ -3,12 +3,10 @@ import {getAllProfiles} from "../../services/profile-service.js";
 
 
 const sessions = {
-
   /*
    * id: XXXXXXXX
    * profiles: [...]
    */
-
 };
 
 export default async function (fastify, opts) {

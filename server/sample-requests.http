@@ -1,0 +1,27 @@
+### Start session
+POST http://localhost:3000/session/start
+
+> {%
+    const sessionId = response.body;
+    client.global.set('sessionId', sessionId);
+%}
+
+### Call Api with sessionID to get next list of players
+GET http://localhost:3000/session/{{sessionId}}/profiles
+
+> {%
+    client.global.set('firstRunResults', JSON.stringify(response.body))
+%}
+
+### Call Api a second time to make sure it gives a different result each time
+GET http://localhost:3000/session/{{sessionId}}/profiles
+
+> {%
+    client.test("Results should be different each run", () => {
+        const run1 = client.global.get('firstRunResults');
+        const run2 = JSON.stringify(response.body)
+        client.log(run1);
+        client.log(run2);
+        client.assert(run1 != run2, 'Every response for getting profiles should return a new set of profiles');
+    })
+%}
