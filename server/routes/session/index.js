@@ -12,6 +12,14 @@ const sessions = {
 };
 
 export default async function (fastify, opts) {
+  /*   NOTE: this was what broke during the coding session
+    fastify.post('/start', async (req, res) => {}
+
+    Reason:
+      lambda functions and standard functions have slightly different scope.
+      req and res will be invalid due to breaking the binding of `this`
+
+  */
   fastify.post('/start', async function(request, response) {
     const identifier = uuidv4();
     sessions[identifier] = getAllProfiles();
